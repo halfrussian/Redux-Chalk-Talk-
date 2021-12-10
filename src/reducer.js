@@ -7,13 +7,37 @@ const reducer = (state, action) => {
     return {...state, cart: []}
   }
   if(action.type === DECREASE) {
-    return {}
+    let tempCart = [];
+    if(action.payload.amount === 1){
+      tempCart = state.cart.filter(
+        cartItem => cartItem.id !== action.payload.id
+      );
+    }
+    else {
+       tempCart =  state.cart.map((cartItem) => {
+        if(cartItem.id === action.payload.id){
+          cartItem = {...cartItem, amount: cartItem.amount - 1}
+        }
+        return cartItem;
+      })
+    }
+    return {...state, cart:tempCart}
   }
   if(action.type === INCREASE) {
-    return {}
+    let tempCart =  state.cart.map((cartItem) => {
+      if(cartItem.id === action.payload.id){
+        cartItem = {...cartItem, amount: cartItem.amount + 1}
+      }
+      return cartItem;
+    })
+    return {
+      ...state,
+       cart:tempCart }
   }
   if(action.type === REMOVE) {
-    return {}
+    return {
+      ...state, 
+      cart: state.cart.filter(cartItem=> cartItem.id !== action.payload.id)}
   }
   if(action.type === GET_TOTAL) {
     return {}
